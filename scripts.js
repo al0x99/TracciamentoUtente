@@ -1,6 +1,6 @@
 jQuery(function($) {
-    $('#fancy_icon-13696-581').on('click', function() {
-        $.post(MyScript.ajaxurl, {
+    $('#_gallery-7640-581').on('click', function() {
+        $.post(TrackUser.ajaxurl, {
             action: 'track_click',
             page_url: window.location.href
         });
