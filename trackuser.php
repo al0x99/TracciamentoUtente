@@ -16,6 +16,30 @@ function enqueue_my_script() {
 }
 add_action( 'wp_enqueue_scripts', 'enqueue_my_script' );
 
+
+function create_user_actions_table() {
+    global $wpdb;
+
+    $charset_collate = $wpdb->get_charset_collate();
+    $table_name = $wpdb->prefix . 'user_actions';
+
+    if ( $wpdb->get_var( "SHOW TABLES LIKE '$table_name'" ) != $table_name ) {
+
+        $sql = "CREATE TABLE $table_name (
+            id mediumint(9) NOT NULL AUTO_INCREMENT,
+            user_id mediumint(9) NOT NULL,
+            ip_address varchar(55) NOT NULL,
+            page_url text NOT NULL,
+            click_time datetime DEFAULT '0000-00-00 00:00:00' NOT NULL,
+            PRIMARY KEY (id)
+        ) $charset_collate;";
+
+        require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
+        dbDelta( $sql );
+    }
+}
+register_activation_hook( __FILE__, 'create_user_actions_table' );
+
 function handle_ajax_request() {
     global $wpdb;
 
